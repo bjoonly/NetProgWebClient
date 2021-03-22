@@ -1,0 +1,111 @@
+﻿<Window x:Class="NetProgPractExam.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:NetProgPractExam" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="550" Width="800">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" >
+                </ResourceDictionary >
+
+            </ResourceDictionary.MergedDictionaries>
+
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" MinHeight="60"></RowDefinition>
+            <RowDefinition Height="Auto"  MinHeight="60"></RowDefinition>
+            <RowDefinition Height="Auto"  MinHeight="60"></RowDefinition>
+            <RowDefinition Height="Auto"  MinHeight="60"></RowDefinition>
+            <RowDefinition></RowDefinition>
+
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="2*"></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+
+        </Grid.ColumnDefinitions>
+
+        <TextBlock FontSize="15"  VerticalAlignment="Bottom" Margin="5" Width="50">URL :</TextBlock>
+        <TextBox  FontSize="15" Grid.Column="1" Grid.ColumnSpan="3" Margin="15,5" VerticalAlignment="Bottom"  Text="{Binding CurrentFileInfo.Source, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+        <Button  Grid.Column="4"  FontSize="15" Margin="10,5"  Height="Auto" Command="{Binding DownloadCommand}">Download</Button>
+        <Button  Grid.Column="5"  FontSize="15" Margin="10,5" Height="Auto"  Command="{Binding StopDownloadCommand}">Stop</Button>
+
+
+
+
+        <TextBlock Grid.Row="1"  FontSize="15" VerticalAlignment="Bottom" Margin="5" Width="50">Folder :</TextBlock>
+        <TextBox   Grid.Row="1"  Grid.Column="1" Grid.ColumnSpan="3" FontSize="15" Margin="15,5" VerticalAlignment="Bottom"  Text="{Binding CurrentFileInfo.FolderPath, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+        <Button    Grid.Row="1"  Grid.Column="4"   FontSize="15" Margin="10,5" DockPanel.Dock="Right" Height="Auto" Command="{Binding SelectFolderCommand}">Browse</Button>
+        <Button    Grid.Row="1"  Grid.Column="5"   FontSize="15" Margin="10,5" DockPanel.Dock="Right" Height="Auto" Command="{Binding MoveFileCommand}">Move</Button>
+
+
+
+        <TextBlock  Grid.Row="2"   FontSize="15" VerticalAlignment="Bottom" Margin="5" Width="50" >Tags :</TextBlock>
+        <Button   Grid.Row="2"  Grid.Column="3"  FontSize="15"  Margin="10,5"  Height="Auto" Command="{Binding AddTagCommand}">Add</Button>
+        <Button   Grid.Row="2"  Grid.Column="4"  FontSize="15"  Margin="10,5"  Height="Auto" Command="{Binding RemoveTagCommand}">Remove</Button>
+        <Button   Grid.Row="2"  Grid.Column="5"   FontSize="15" Margin="10,5"  Height="Auto" Command="{Binding SearchByTagCommand}">Search</Button>
+        <TextBox  Grid.Row="2"  Grid.Column="2"  FontSize="15" Margin="5" Width="120" VerticalAlignment="Bottom" Text="{Binding Tag, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+        <ListBox  Grid.Row="2"  Grid.Column="1"  FontSize="15" Margin="5,0" ItemsSource="{Binding CurrentFileInfo.Tags}" SelectedItem="{Binding Tag}" VerticalAlignment="Bottom"   ScrollViewer.HorizontalScrollBarVisibility="Auto"  >
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+        </ListBox>
+
+
+
+        <TextBlock  Grid.Row="3"   FontSize="15" VerticalAlignment="Bottom" Margin="5" Width="50" >Name :</TextBlock>
+        <Button  Grid.Row="3"  Grid.Column="5"  FontSize="15" Margin="10,5"  Height="Auto"  Command="{Binding DeleteDownloadCommand}">
+            <TextBlock TextWrapping="Wrap" TextAlignment="Center">Delete download</TextBlock>
+
+        </Button>
+        <Button  Grid.Row="3"  Grid.Column="4"   FontSize="15" Margin="10,5" DockPanel.Dock="Right" Height="Auto" Command="{Binding DeleteFileCommand}">
+            <TextBlock TextWrapping="Wrap" TextAlignment="Center">Delete file</TextBlock>
+        </Button>
+
+        <Button  Grid.Row="3"  Grid.Column="3"   FontSize="15" Margin="10,5" DockPanel.Dock="Right" Height="Auto" Command="{Binding RenameFileCommand, UpdateSourceTrigger=PropertyChanged}">Remame</Button>
+        <TextBox  Grid.Row="3"  Grid.Column="1" DockPanel.Dock="Right" Grid.ColumnSpan="2"  FontSize="15" Margin="5" VerticalAlignment="Bottom"  Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+
+
+        <ListBox Grid.Row="4" Grid.ColumnSpan="6" ItemsSource="{Binding FileInfos}" SelectedItem="{Binding SelectedFileInfo}" HorizontalContentAlignment="Stretch">
+
+            <ListBox.ItemTemplate>
+
+                <DataTemplate >
+
+                    <DockPanel>
+                        <TextBlock  Text="{Binding Name}" Margin="5" FontSize="15" HorizontalAlignment="Right" Width="Auto" MinWidth="150"></TextBlock>
+                        <TextBlock  Margin="5" FontSize="15" HorizontalAlignment="Left" DockPanel.Dock="Right" Width="Auto" MinWidth="100">
+                            <Run Text="{Binding  BytesProgress, UpdateSourceTrigger=PropertyChanged}"></Run>
+                            <Run Text="/"></Run>
+                            <Run Text="{Binding Size}"></Run>
+                            <Run>MB</Run>
+                        </TextBlock>
+
+                        <TextBlock Text="{Binding Status}" Margin="5" FontSize="15" HorizontalAlignment="Left" DockPanel.Dock="Right" Width="120"></TextBlock>
+                        <TextBlock Margin="5" FontSize="15" HorizontalAlignment="Left" DockPanel.Dock="Right" MinWidth="30">
+                           <Run  Text="{Binding Progress}"></Run>
+                            <Run>%</Run>
+                        </TextBlock>
+                        <ProgressBar  Value="{Binding Progress}" Margin="5" FontSize="15" ></ProgressBar>
+
+
+
+                    </DockPanel>
+
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
+</Window>
